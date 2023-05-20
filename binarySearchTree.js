@@ -11,6 +11,10 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
+function randomArray(length, max) {
+    return Array.from({length: length}, () => Math.floor(Math.random() * max));
+}
+
 class Node {
     constructor(data) {
         this.data = data;
@@ -265,6 +269,11 @@ class Tree {
         return Math.abs(left - right) <= 1;
     }
 
+    rebalance() {
+        const arr = this.inOrder();
+        this.root = buildTree(arr);
+    }
+
 }
 
 function buildTree(arr) {
@@ -287,6 +296,32 @@ function buildTree(arr) {
       return newNode;
 }
 
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+function addRandomNumbers(tree, count, max) {
+    const arr = randomArray(count, max);
+    arr.forEach((num) => tree.insert(num));
+}
 
-prettyPrint(tree.root);
+// Tie it all together
+
+//1. Create a binary search tree from an array of random numbers
+const tree = new Tree(randomArray(10, 1000));
+//2. Confirm that the tree is balanced by calling isBalanced
+console.log(tree.isBalanced());
+//3. Print out all elements in level, pre, post, and in order
+console.log(tree.levelOrder());
+console.log(tree.preOrder());
+console.log(tree.postOrder());
+console.log(tree.inOrder());
+//4. Unbalance the tree by adding several numbers > 100
+addRandomNumbers(tree, 100, 100);
+//5. Confirm that the tree is unbalanced by calling isBalanced
+console.log(tree.isBalanced());
+//6. Balance the tree by calling rebalance
+tree.rebalance();
+//7. Confirm that the tree is balanced by calling isBalanced
+console.log(tree.isBalanced());
+//8. Print out all elements in level, pre, post, and in order
+console.log(tree.levelOrder());
+console.log(tree.preOrder());
+console.log(tree.postOrder());
+console.log(tree.inOrder());
