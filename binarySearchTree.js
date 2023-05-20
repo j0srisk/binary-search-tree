@@ -129,7 +129,7 @@ class Tree {
                 return currentNode;
             }
         }
-        return "Not Found";
+        return null;
     }
 
     levelOrder(functionToCall) {
@@ -227,6 +227,44 @@ class Tree {
             return values;
         }
     }
+
+    height(node) {
+        if (node === null) {
+            return null;
+        }
+        const left = this.height(node.left);
+        const right = this.height(node.right);
+
+        return Math.max(left, right) + 1;
+    }
+
+    depth(node) {
+        if (node === null) {
+            return null;
+        }
+        let currentNode = this.root;
+        let depth = 0;
+
+        while (currentNode) {
+            if (node.data < currentNode.data) {
+                currentNode = currentNode.left;
+                depth++;
+            } else if (node.data > currentNode.data) {
+                currentNode = currentNode.right;
+                depth++;
+            } else {
+                return depth;
+            }
+        }
+    }
+
+    isBalanced() {
+        const left = this.height(this.root.left);
+        const right = this.height(this.root.right);
+
+        return Math.abs(left - right) <= 1;
+    }
+
 }
 
 function buildTree(arr) {
