@@ -131,6 +131,102 @@ class Tree {
         }
         return "Not Found";
     }
+
+    levelOrder(functionToCall) {
+        let queue = [this.root];
+        let values = [];
+
+        while (queue.length) {
+            let currentNode = queue.shift();
+
+            if (functionToCall) {
+                functionToCall(currentNode);
+            } else {
+                values.push(currentNode.data);
+            }
+
+            if (currentNode.left) {
+                queue.push(currentNode.left);
+            }
+
+            if (currentNode.right) {
+                queue.push(currentNode.right);
+            }
+        }
+
+        if (!functionToCall) {
+            return values;
+        }
+    }
+
+    inOrder(functionToCall) {
+        let values = [];
+        function traverse(node) {
+            if (node.left) {
+                traverse(node.left);
+            }
+            if (functionToCall) {
+                functionToCall(node);
+            } else {
+                values.push(node.data);
+            }
+            if (node.right) {
+                traverse(node.right);
+            }
+        }
+
+        traverse(this.root);
+
+        if (!functionToCall) {
+            return values;
+        }
+    }
+
+    preOrder(functionToCall) {
+        let values = [];
+        function traverse(node) {
+            if (functionToCall) {
+                functionToCall(node);
+            } else {
+                values.push(node.data);
+            }
+            if (node.left) {
+                traverse(node.left);
+            }
+            if (node.right) {
+                traverse(node.right);
+            }
+        }
+
+        traverse(this.root);
+
+        if (!functionToCall) {
+            return values;
+        }
+    }
+
+    postOrder(functionToCall) {
+        let values = [];
+        function traverse(node) {
+            if (node.left) {
+                traverse(node.left);
+            }
+            if (node.right) {
+                traverse(node.right);
+            }
+            if (functionToCall) {
+                functionToCall(node);
+            } else {
+                values.push(node.data);
+            }
+        }
+
+        traverse(this.root);
+
+        if (!functionToCall) {
+            return values;
+        }
+    }
 }
 
 function buildTree(arr) {
@@ -156,9 +252,3 @@ function buildTree(arr) {
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
 prettyPrint(tree.root);
-
-tree.insert(10);
-
-prettyPrint(tree.root);
-
-console.log(tree.find(14));
